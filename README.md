@@ -1,46 +1,28 @@
-# Testing functions with JEST // Javascript
+# TDD with JEST
 
-This project is used to test the concept of TDD implementations.
+This project calls the Open Weather Map API through RapidApi and returns simple html. The testing framework used in this project is JEST by Facebook.
 
-It uses JEST to test one simple function(getContent) that's getting back
-the astronomical picture of the day using the NASA Api. To use this navigate to
-the command line and enter this command:
+To begin the test enter into the command line:
 
     npm test
 
-It will trigger 'index.test.js' which contains this simple test
+My 2 simple tests are just checking to make sure that I am getting back what I think I should be getting back depending on what is being sent to the function call.
 
-    const getContent = require('./index');
+    const Streamer = require('./ElevatorMedia');
 
-    describe('getContent', () => {
-        it('can fetch', async() => {
-            response = await getContent("https://api.nasa.gov/planetary/apod?api_key=zOo3dMwTVU2F039jljNCfbowWVnMjRvYAqEIWBv8");
-            expect(response).toContain("title");
-        })
+    describe("ElevatorMedia::Streamer", () => {
+        it("returns a string containing Tampa", async() => {
+            expect(await Streamer.getContent()).toEqual("<div>Tampa</div>");
+        });
+        it("returns a string containing Toronto", async() => {
+            expect(await Streamer.getContent({city: "Toronto"})).toEqual("<div>Toronto</div>");
+        });
     });
 
-'index.test.js' is gonna test the getContent function which is located in the
-'index.js' file and looks like this.
-
-    const fetch = require("node-fetch");
-
-    async function getContent() {
-        const url = 'https://api.nasa.gov/planetary/apod?api_key=zOo3dMwTVU2F039jljNCfbowWVnMjRvYAqEIWBv8';
-        const response = await fetch(url);
-        const json = await response.json();
-        const data = JSON.stringify(json);
-        const html = "<div>" + data + "</div>";
-        console.log(html);
-        return html;
-    };
-
-    module.exports = getContent;
-
-In the terminal you should see that the test works by receiving a message that
-contains something like this.
+Here is the result of running the test.
 
     Test Suites: 1 passed, 1 total
-    Tests:       1 passed, 1 total
+    Tests:       2 passed, 2 total
     Snapshots:   0 total
-    Time:        3.156s
+    Time:        1.878s, estimated 2s
     Ran all test suites.
